@@ -1,7 +1,6 @@
 import type { NextApiResponse } from "next";
 import { Instructor } from "@/generated/prisma";
-import { makeApiHandler } from "@/lib/makeApiHandler";
-import { prisma } from "@/lib/prisma";
+import { makeApiHandler, prisma } from "@/lib";
 
 const handler = makeApiHandler({
   GET: async (req, res: NextApiResponse<Instructor[]>) => {
