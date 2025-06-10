@@ -2,7 +2,7 @@ import type { NextApiResponse } from "next";
 import { Instructor } from "@/generated/prisma";
 import { makeApiHandler, prisma } from "@/lib";
 
-const handler = makeApiHandler({
+export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Instructor[]>) => {
     const instructors = await prisma.instructor.findMany();
     res.status(200).json(instructors);
@@ -18,5 +18,3 @@ const handler = makeApiHandler({
     res.status(201).json(instructor);
   },
 });
-
-export default handler;
