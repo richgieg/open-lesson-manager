@@ -15,7 +15,12 @@ export function makeApiHandler(
       methodHandlers as Partial<Record<string, MethodHandler>>
     )[req.method ?? ""];
     if (methodHandler) {
-      return methodHandler(req, res);
+      try {
+        return methodHandler(req, res);
+      } catch {
+        res.status(500).end();
+        return;
+      }
     }
     res.setHeader("Allow", Object.keys(methodHandlers));
     res.status(405).end();
