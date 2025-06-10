@@ -5,16 +5,15 @@ import { makeApiHandler, prisma } from "@/lib";
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Instructor[]>) => {
     const instructors = await prisma.instructor.findMany();
-    res.status(200).json(instructors);
+    return res.status(200).json(instructors);
   },
 
   POST: async (req, res: NextApiResponse<Instructor>) => {
     const { name } = req.body;
     if (!name) {
-      res.status(400).end();
-      return;
+      return res.status(400).end();
     }
     const instructor = await prisma.instructor.create({ data: { name } });
-    res.status(201).json(instructor);
+    return res.status(201).json(instructor);
   },
 });

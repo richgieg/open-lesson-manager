@@ -5,7 +5,7 @@ type Method = "GET" | "POST" | "PUT" | "DELETE";
 type MethodHandler = (
   req: NextApiRequest,
   res: NextApiResponse
-) => void | Promise<void>;
+) => void | Promise<void | NextApiResponse>;
 
 export function makeApiHandler(
   methodHandlers: Partial<Record<Method, MethodHandler>>
@@ -18,11 +18,10 @@ export function makeApiHandler(
       try {
         return methodHandler(req, res);
       } catch {
-        res.status(500).end();
-        return;
+        return res.status(500).end();
       }
     }
-    res.setHeader("Allow", Object.keys(methodHandlers));
-    res.status(405).end();
+    res.setHeader("Allow", Object.keys(methodHandlers).join(", "));
+    return res.status(405).end();
   };
 }
