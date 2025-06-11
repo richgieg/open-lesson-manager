@@ -1,17 +1,13 @@
 import { Instructor } from "@/types";
 import { useState, FormEvent } from "react";
 
-type SaveDeleteFormProps = {
+type Props = {
   instructor: Instructor;
   onSave: (id: number, name: string) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
 };
 
-export function SaveDeleteForm({
-  instructor,
-  onSave,
-  onDelete,
-}: SaveDeleteFormProps) {
+export function SaveDeleteForm({ instructor, onSave, onDelete }: Props) {
   const [name, setName] = useState(instructor.name);
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
