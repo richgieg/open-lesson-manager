@@ -17,31 +17,7 @@ export default function Instructors() {
     return <>Loading...</>;
   }
 
-  return (
-    <>
-      {instructors.map((instructor) => (
-        <SaveDeleteForm
-          key={instructor.id}
-          instructor={instructor}
-          instructors={instructors}
-          setInstructors={setInstructors}
-        />
-      ))}
-      <CreateForm instructors={instructors} setInstructors={setInstructors} />
-    </>
-  );
-}
-
-type CreateFormProps = {
-  instructors: Instructor[];
-  setInstructors: (instructors: Instructor[]) => void;
-};
-
-function CreateForm({ instructors, setInstructors }: CreateFormProps) {
-  const [name, setName] = useState("");
-
-  const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCreate = async (name: string) => {
     const response = await fetch("/api/instructors", {
       method: "POST",
       headers: {
@@ -51,6 +27,52 @@ function CreateForm({ instructors, setInstructors }: CreateFormProps) {
     });
     const data = await response.json();
     setInstructors([...instructors, data]);
+  };
+
+  const handleSave = async (id: number, name: string) => {
+    const response = await fetch(`/api/instructors/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+    const data = await response.json();
+    setInstructors(instructors.map((i) => (i.id === id ? data : i)));
+  };
+
+  const handleDelete = async (id: number) => {
+    await fetch(`/api/instructors/${id}`, {
+      method: "DELETE",
+    });
+    setInstructors(instructors.filter((i) => i.id !== id));
+  };
+
+  return (
+    <>
+      {instructors.map((instructor) => (
+        <SaveDeleteForm
+          key={instructor.id}
+          instructor={instructor}
+          onSave={handleSave}
+          onDelete={handleDelete}
+        />
+      ))}
+      <CreateForm onCreate={handleCreate} />
+    </>
+  );
+}
+
+type CreateFormProps = {
+  onCreate: (name: string) => Promise<void>;
+};
+
+function CreateForm({ onCreate }: CreateFormProps) {
+  const [name, setName] = useState("");
+
+  const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await onCreate(name);
     setName("");
   };
 
@@ -64,35 +86,20 @@ function CreateForm({ instructors, setInstructors }: CreateFormProps) {
 
 type SaveDeleteFormProps = {
   instructor: Instructor;
-  instructors: Instructor[];
-  setInstructors: (instructors: Instructor[]) => void;
+  onSave: (id: number, name: string) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
 };
 
-function SaveDeleteForm({
-  instructor,
-  instructors,
-  setInstructors,
-}: SaveDeleteFormProps) {
+function SaveDeleteForm({ instructor, onSave, onDelete }: SaveDeleteFormProps) {
   const [name, setName] = useState(instructor.name);
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch(`/api/instructors/${instructor.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name }),
-    });
-    const data = await response.json();
-    setInstructors(instructors.map((i) => (i.id === instructor.id ? data : i)));
+    await onSave(instructor.id, name);
   };
 
   const handleDelete = async () => {
-    await fetch(`/api/instructors/${instructor.id}`, {
-      method: "DELETE",
-    });
-    setInstructors(instructors.filter((i) => i.id !== instructor.id));
+    await onDelete(instructor.id);
   };
 
   return (
