@@ -3,3 +3,16 @@ export type Instructor = {
   pid: string;
   name: string;
 };
+
+export type Organization = {
+  id: number;
+  pid: string;
+  name: string;
+};
+
+export type Subject = {
+  id: number;
+  pid: string;
+  name: string;
+  companyId: string;
+};
