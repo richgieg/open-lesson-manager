@@ -1,4 +1,5 @@
 import { Organization } from "@/types";
+import Link from "next/link";
 import { useState, FormEvent } from "react";
 
 type Props = {
@@ -26,6 +27,7 @@ export function SaveDeleteForm({ organization, onSave, onDelete }: Props) {
       <button type="button" onClick={handleDelete}>
         Delete
       </button>
+      <Link href={`/organizations/${organization.pid}/subjects`}>Subjects</Link>
     </form>
   );
 }
