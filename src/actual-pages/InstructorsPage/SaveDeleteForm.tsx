@@ -3,8 +3,8 @@ import { useState, FormEvent } from "react";
 
 type Props = {
   instructor: Instructor;
-  onSave: (id: number, name: string) => Promise<void>;
-  onDelete: (id: number) => Promise<void>;
+  onSave: (pid: string, name: string) => Promise<void>;
+  onDelete: (pid: string) => Promise<void>;
 };
 
 export function SaveDeleteForm({ instructor, onSave, onDelete }: Props) {
@@ -12,11 +12,11 @@ export function SaveDeleteForm({ instructor, onSave, onDelete }: Props) {
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await onSave(instructor.id, name);
+    await onSave(instructor.pid, name);
   };
 
   const handleDelete = async () => {
-    await onDelete(instructor.id);
+    await onDelete(instructor.pid);
   };
 
   return (
