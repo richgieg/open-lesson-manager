@@ -1,2 +1,1 @@
-export { InstructorsPage } from "./InstructorsPage";
 export { OrganizationsPage } from "./OrganizationsPage";
