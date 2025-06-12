@@ -31,20 +31,23 @@ model User {
   posts Post[]
 }
 
-model Instructor {
-  id   Int    @id @default(autoincrement())
-  pid  String @unique @default(uuid())
-  name String
-}
-
 model Organization {
-  id       Int       @id @default(autoincrement())
-  pid      String    @unique @default(uuid())
-  name     String
-  subjects Subject[]
+  id          Int          @id @default(autoincrement())
+  pid         String       @unique @default(uuid())
+  name        String
+  subjects    Subject[]
+  instructors Instructor[]
 }
 
 model Subject {
+  id             Int          @id @default(autoincrement())
+  pid            String       @unique @default(uuid())
+  name           String
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+}
+
+model Instructor {
   id             Int          @id @default(autoincrement())
   pid            String       @unique @default(uuid())
   name           String

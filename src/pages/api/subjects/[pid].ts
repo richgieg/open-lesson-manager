@@ -5,9 +5,7 @@ import { NextApiResponse } from "next";
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Subject>) => {
     const pid = req.query.pid as string;
-    const subject = await prisma.subject.findUnique({
-      where: { pid },
-    });
+    const subject = await prisma.subject.findUnique({ where: { pid } });
     if (!subject) {
       return sendError(res, 404);
     }
