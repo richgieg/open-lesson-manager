@@ -1,60 +1,51 @@
 import { Instructor, Prisma } from "@/generated/prisma";
-import { makeApiHandler, prisma } from "@/lib";
+import { makeApiHandler, prisma, sendError } from "@/lib";
 import { NextApiResponse } from "next";
 
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Instructor>) => {
-    const id = Number(req.query.id as string);
-    if (isNaN(id)) {
-      return res.status(400).end();
-    }
-    const instructor = await prisma.instructor.findUnique({ where: { id } });
+    const pid = req.query.pid as string;
+    const instructor = await prisma.instructor.findUnique({ where: { pid } });
     if (!instructor) {
-      return res.status(404).end();
+      return sendError(res, 404);
     }
     return res.status(200).json(instructor);
   },
 
   PUT: async (req, res: NextApiResponse<Instructor>) => {
-    const id = Number(req.query.id as string);
-    if (isNaN(id)) {
-      return res.status(400).end();
-    }
+    const pid = req.query.pid as string;
     const { name } = req.body;
     if (!name) {
-      return res.status(400).end();
+      return sendError(res, 400);
     }
     try {
       const instructor = await prisma.instructor.update({
-        where: { id },
+        where: { pid },
         data: { name },
       });
       return res.status(200).json(instructor);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2025") {
-          return res.status(404).end();
+          return sendError(res, 404);
         }
       }
-      return res.status(500).end();
+      return sendError(res, 500);
     }
   },
 
   DELETE: async (req, res: NextApiResponse<Instructor>) => {
-    const id = Number(req.query.id as string);
-    if (isNaN(id)) {
-      return res.status(400).end();
-    }
+    const pid = req.query.pid as string;
     try {
-      const instructor = await prisma.instructor.delete({ where: { id } });
+      const instructor = await prisma.instructor.delete({ where: { pid } });
       return res.status(200).json(instructor);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2025") {
-          return res.status(404).end();
+          return sendError(res, 404);
         }
       }
-      return res.status(500).end();
+      return sendError(res, 500);
     }
   },
 });

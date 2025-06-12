@@ -5,7 +5,7 @@ type Method = "GET" | "POST" | "PUT" | "DELETE";
 type MethodHandler = (
   req: NextApiRequest,
   res: NextApiResponse
-) => void | Promise<void | NextApiResponse>;
+) => void | Promise<void>;
 
 export function makeApiHandler(
   methodHandlers: Partial<Record<Method, MethodHandler>>

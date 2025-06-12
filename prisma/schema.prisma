@@ -33,5 +33,6 @@ model User {
 
 model Instructor {
   id   Int    @id @default(autoincrement())
+  pid  String @unique @default(uuid())
   name String
 }
