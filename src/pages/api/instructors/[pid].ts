@@ -25,10 +25,11 @@ export default makeApiHandler({
       });
       return res.status(200).json(instructor);
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === "P2025") {
-          return sendError(res, 404);
-        }
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        return sendError(res, 404);
       }
       return sendError(res, 500);
     }
@@ -40,10 +41,11 @@ export default makeApiHandler({
       const instructor = await prisma.instructor.delete({ where: { pid } });
       return res.status(200).json(instructor);
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === "P2025") {
-          return sendError(res, 404);
-        }
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        return sendError(res, 404);
       }
       return sendError(res, 500);
     }

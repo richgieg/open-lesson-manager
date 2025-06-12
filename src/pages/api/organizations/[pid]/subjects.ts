@@ -32,10 +32,11 @@ export default makeApiHandler({
       });
       return res.status(201).json(subject);
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === "P2025") {
-          return sendError(res, 404);
-        }
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        return sendError(res, 404);
       }
       return sendError(res, 500);
     }
