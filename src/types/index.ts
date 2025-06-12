@@ -9,3 +9,10 @@ export type Organization = {
   pid: string;
   name: string;
 };
+
+export type Subject = {
+  id: number;
+  pid: string;
+  name: string;
+  companyId: string;
+};
