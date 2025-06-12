@@ -1,14 +1,18 @@
 import type { NextApiResponse } from "next";
-import { Organization, Subject } from "@/generated/prisma";
+import { Organization, Prisma, Subject } from "@/generated/prisma";
 import { makeApiHandler, prisma, sendError } from "@/lib";
 
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Subject[]>) => {
     const pid = req.query.pid as string;
-    const subjects = await prisma.subject.findMany({
-      where: { Organization: { pid } },
+    const organization = await prisma.organization.findUnique({
+      where: { pid },
+      include: { subjects: true },
     });
-    return res.status(200).json(subjects);
+    if (!organization) {
+      return sendError(res, 404);
+    }
+    return res.status(200).json(organization.subjects);
   },
 
   POST: async (req, res: NextApiResponse<Organization>) => {
@@ -17,14 +21,23 @@ export default makeApiHandler({
     if (!name) {
       return sendError(res, 400);
     }
-    const subject = await prisma.subject.create({
-      data: {
-        name,
-        Organization: {
-          connect: { pid },
+    try {
+      const subject = await prisma.subject.create({
+        data: {
+          name,
+          Organization: {
+            connect: { pid },
+          },
         },
-      },
-    });
-    return res.status(201).json(subject);
+      });
+      return res.status(201).json(subject);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2025") {
+          return sendError(res, 404);
+        }
+      }
+      return sendError(res, 500);
+    }
   },
 });
