@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { sendError } from "./sendError";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -18,10 +19,10 @@ export function makeApiHandler(
       try {
         return methodHandler(req, res);
       } catch {
-        return res.status(500).end();
+        return sendError(res, 500);
       }
     }
     res.setHeader("Allow", Object.keys(methodHandlers).join(", "));
-    return res.status(405).end();
+    return sendError(res, 405);
   };
 }

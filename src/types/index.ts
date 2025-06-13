@@ -4,14 +4,14 @@ export type Organization = {
   name: string;
 };
 
-export type Subject = {
+export type Instructor = {
   id: number;
   pid: string;
   name: string;
   companyId: string;
 };
 
-export type Instructor = {
+export type Subject = {
   id: number;
   pid: string;
   name: string;
