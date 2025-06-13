@@ -4,26 +4,28 @@ import { useEffect, useState } from "react";
 
 export function useSubjects() {
   const router = useRouter();
-  const [pid, setPid] = useState<string | null>(null);
+  const [organizationPid, setOrganizationPid] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<Subject[] | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
-      setPid(router.query.pid as string);
+      setOrganizationPid(router.query.organizationPid as string);
     }
   }, [router]);
 
   useEffect(() => {
-    if (!pid) {
+    if (!organizationPid) {
       return;
     }
     const fetchSubjects = async () => {
-      const response = await fetch(`/api/organizations/${pid}/subjects`);
+      const response = await fetch(
+        `/api/organizations/${organizationPid}/subjects`
+      );
       const data = await response.json();
       setSubjects(data);
     };
     fetchSubjects();
-  }, [pid]);
+  }, [organizationPid]);
 
   if (!subjects) {
     return {
@@ -35,19 +37,22 @@ export function useSubjects() {
   }
 
   const handleCreate = async (name: string) => {
-    const response = await fetch(`/api/organizations/${pid}/subjects`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name }),
-    });
+    const response = await fetch(
+      `/api/organizations/${organizationPid}/subjects`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name }),
+      }
+    );
     const data = await response.json();
     setSubjects([...subjects, data]);
   };
 
-  const handleSave = async (pid: string, name: string) => {
-    const response = await fetch(`/api/subjects/${pid}`, {
+  const handleSave = async (subjectPid: string, name: string) => {
+    const response = await fetch(`/api/subjects/${subjectPid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -55,14 +60,14 @@ export function useSubjects() {
       body: JSON.stringify({ name }),
     });
     const data = await response.json();
-    setSubjects(subjects.map((i) => (i.pid === pid ? data : i)));
+    setSubjects(subjects.map((i) => (i.pid === subjectPid ? data : i)));
   };
 
-  const handleDelete = async (pid: string) => {
-    await fetch(`/api/subjects/${pid}`, {
+  const handleDelete = async (subjectPid: string) => {
+    await fetch(`/api/subjects/${subjectPid}`, {
       method: "DELETE",
     });
-    setSubjects(subjects.filter((i) => i.pid !== pid));
+    setSubjects(subjects.filter((i) => i.pid !== subjectPid));
   };
 
   return {

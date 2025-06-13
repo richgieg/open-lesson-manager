@@ -9,7 +9,7 @@ export function useLinkedSubjects() {
 
   useEffect(() => {
     if (router.isReady) {
-      setInstructorPid(router.query.pid as string);
+      setInstructorPid(router.query.instructorPid as string);
     }
   }, [router]);
 

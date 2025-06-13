@@ -4,8 +4,8 @@ import { useState, FormEvent } from "react";
 
 type Props = {
   instructor: Instructor;
-  onSave: (pid: string, name: string) => Promise<void>;
-  onDelete: (pid: string) => Promise<void>;
+  onSave: (instructorPid: string, name: string) => Promise<void>;
+  onDelete: (instructorPid: string) => Promise<void>;
 };
 
 export function SaveDeleteForm({ instructor, onSave, onDelete }: Props) {

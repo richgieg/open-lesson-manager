@@ -3,7 +3,7 @@ import { useState, FormEvent } from "react";
 
 type Props = {
   availableSubjects: Subject[];
-  onCreateLink: (pid: string) => Promise<void>;
+  onCreateLink: (subjectPid: string) => Promise<void>;
 };
 
 export function CreateLinkForm({ availableSubjects, onCreateLink }: Props) {
