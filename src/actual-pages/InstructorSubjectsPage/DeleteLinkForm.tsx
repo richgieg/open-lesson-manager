@@ -14,7 +14,7 @@ export function DeleteLinkForm({ subject, onDeleteLink }: Props) {
     <div>
       <span>{subject.name}</span>
       <button type="button" onClick={handleDeleteLink}>
-        Delete
+        DeleteLink
       </button>
     </div>
   );

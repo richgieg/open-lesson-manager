@@ -1,25 +1,32 @@
 import { CreateLinkForm } from "./CreateLinkForm";
 import { DeleteLinkForm } from "./DeleteLinkForm";
-import { useInstructorSubjects } from "./useInstructorSubjects";
+import { useAvailableSubjects } from "./useAvailableSubjects";
+import { useLinkedSubjects } from "./useLinkedSubjects";
 
 export function InstructorSubjectsPage() {
-  const { instructorSubjects, handleCreateLink, handleDeleteLink } =
-    useInstructorSubjects();
+  const { linkedSubjects, handleCreateLink, handleDeleteLink } =
+    useLinkedSubjects();
+  const availableSubjects = useAvailableSubjects();
 
-  if (!instructorSubjects) {
+  if (!linkedSubjects || !availableSubjects) {
     return <>Loading...</>;
   }
 
   return (
     <>
-      {instructorSubjects.map((subject) => (
+      {linkedSubjects.map((subject) => (
         <DeleteLinkForm
           key={subject.id}
           subject={subject}
           onDeleteLink={handleDeleteLink}
         />
       ))}
-      <CreateLinkForm onCreateLink={handleCreateLink} />
+      {availableSubjects.length > 0 && (
+        <CreateLinkForm
+          availableSubjects={availableSubjects}
+          onCreateLink={handleCreateLink}
+        />
+      )}
     </>
   );
 }

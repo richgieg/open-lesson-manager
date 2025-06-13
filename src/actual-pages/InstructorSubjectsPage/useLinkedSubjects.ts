@@ -2,12 +2,10 @@ import { Subject } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export function useInstructorSubjects() {
+export function useLinkedSubjects() {
   const router = useRouter();
   const [instructorPid, setInstructorPid] = useState<string | null>(null);
-  const [instructorSubjects, setInstructorSubjects] = useState<
-    Subject[] | null
-  >(null);
+  const [linkedSubjects, setLinkedSubjects] = useState<Subject[] | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -24,14 +22,14 @@ export function useInstructorSubjects() {
         `/api/instructors/${instructorPid}/subjects`
       );
       const data = await response.json();
-      setInstructorSubjects(data);
+      setLinkedSubjects(data);
     };
     fetchInstructorSubjects();
   }, [instructorPid]);
 
-  if (!instructorSubjects) {
+  if (!linkedSubjects) {
     return {
-      instructorSubjects: null,
+      linkedSubjects: null,
       handleCreateLink: null,
       handleDeleteLink: null,
     };
@@ -45,20 +43,20 @@ export function useInstructorSubjects() {
       }
     );
     const data = await response.json();
-    setInstructorSubjects([...instructorSubjects, data]);
+    if (!linkedSubjects.find((s) => s.pid === subjectPid)) {
+      setLinkedSubjects([...linkedSubjects, data]);
+    }
   };
 
   const handleDeleteLink = async (subjectPid: string) => {
     await fetch(`/api/instructors/${instructorPid}/subjects/${subjectPid}`, {
       method: "DELETE",
     });
-    setInstructorSubjects(
-      instructorSubjects.filter((i) => i.pid !== subjectPid)
-    );
+    setLinkedSubjects(linkedSubjects.filter((i) => i.pid !== subjectPid));
   };
 
   return {
-    instructorSubjects,
+    linkedSubjects,
     handleCreateLink,
     handleDeleteLink,
   };
