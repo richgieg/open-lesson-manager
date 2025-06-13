@@ -4,8 +4,10 @@ import { NextApiResponse } from "next";
 
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Instructor>) => {
-    const pid = req.query.pid as string;
-    const instructor = await prisma.instructor.findUnique({ where: { pid } });
+    const instructorPid = req.query.instructorPid as string;
+    const instructor = await prisma.instructor.findUnique({
+      where: { pid: instructorPid },
+    });
     if (!instructor) {
       return sendError(res, 404);
     }
@@ -13,14 +15,14 @@ export default makeApiHandler({
   },
 
   PUT: async (req, res: NextApiResponse<Instructor>) => {
-    const pid = req.query.pid as string;
+    const instructorPid = req.query.instructorPid as string;
     const { name } = req.body;
     if (!name) {
       return sendError(res, 400);
     }
     try {
       const instructor = await prisma.instructor.update({
-        where: { pid },
+        where: { pid: instructorPid },
         data: { name },
       });
       return res.status(200).json(instructor);
@@ -36,9 +38,11 @@ export default makeApiHandler({
   },
 
   DELETE: async (req, res: NextApiResponse<Instructor>) => {
-    const pid = req.query.pid as string;
+    const instructorPid = req.query.instructorPid as string;
     try {
-      const instructor = await prisma.instructor.delete({ where: { pid } });
+      const instructor = await prisma.instructor.delete({
+        where: { pid: instructorPid },
+      });
       return res.status(200).json(instructor);
     } catch (error) {
       if (

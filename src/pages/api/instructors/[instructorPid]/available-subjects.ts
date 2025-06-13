@@ -4,9 +4,9 @@ import { makeApiHandler, prisma, sendError } from "@/lib";
 
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Subject[]>) => {
-    const pid = req.query.pid as string;
+    const instructorPid = req.query.instructorPid as string;
     const instructor = await prisma.instructor.findUnique({
-      where: { pid },
+      where: { pid: instructorPid },
       include: { Organization: { include: { subjects: true } } },
     });
     if (!instructor) {

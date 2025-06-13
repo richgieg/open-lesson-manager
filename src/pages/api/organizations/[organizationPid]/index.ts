@@ -4,9 +4,9 @@ import { NextApiResponse } from "next";
 
 export default makeApiHandler({
   GET: async (req, res: NextApiResponse<Organization>) => {
-    const pid = req.query.pid as string;
+    const organizationPid = req.query.organizationPid as string;
     const organization = await prisma.organization.findUnique({
-      where: { pid },
+      where: { pid: organizationPid },
     });
     if (!organization) {
       return sendError(res, 404);
@@ -15,14 +15,14 @@ export default makeApiHandler({
   },
 
   PUT: async (req, res: NextApiResponse<Organization>) => {
-    const pid = req.query.pid as string;
+    const organizationPid = req.query.organizationPid as string;
     const { name } = req.body;
     if (!name) {
       return sendError(res, 400);
     }
     try {
       const organization = await prisma.organization.update({
-        where: { pid },
+        where: { pid: organizationPid },
         data: { name },
       });
       return res.status(200).json(organization);
@@ -38,9 +38,11 @@ export default makeApiHandler({
   },
 
   DELETE: async (req, res: NextApiResponse<Organization>) => {
-    const pid = req.query.pid as string;
+    const organizationPid = req.query.organizationPid as string;
     try {
-      const organization = await prisma.organization.delete({ where: { pid } });
+      const organization = await prisma.organization.delete({
+        where: { pid: organizationPid },
+      });
       return res.status(200).json(organization);
     } catch (error) {
       if (

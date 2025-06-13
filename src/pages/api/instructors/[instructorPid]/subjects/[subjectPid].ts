@@ -4,7 +4,7 @@ import { makeApiHandler, prisma, sendError } from "@/lib";
 
 export default makeApiHandler({
   POST: async (req, res: NextApiResponse<Subject>) => {
-    const instructorPid = req.query.pid as string;
+    const instructorPid = req.query.instructorPid as string;
     const subjectPid = req.query.subjectPid as string;
     if (!subjectPid) {
       return sendError(res, 400);
@@ -35,7 +35,7 @@ export default makeApiHandler({
   },
 
   DELETE: async (req, res: NextApiResponse<Subject>) => {
-    const instructorPid = req.query.pid as string;
+    const instructorPid = req.query.instructorPid as string;
     const subjectPid = req.query.subjectPid as string;
     if (!subjectPid) {
       return sendError(res, 400);
