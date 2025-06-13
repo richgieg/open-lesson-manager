@@ -27,8 +27,8 @@ model Instructor {
   id             Int          @id @default(autoincrement())
   pid            String       @unique @default(uuid())
   name           String
-  Organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
+  Organization   Organization @relation(fields: [organizationId], references: [id])
   subjects       Subject[]
 }
 
@@ -36,7 +36,7 @@ model Subject {
   id             Int          @id @default(autoincrement())
   pid            String       @unique @default(uuid())
   name           String
-  Organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
+  Organization   Organization @relation(fields: [organizationId], references: [id])
   instructors    Instructor[]
 }
