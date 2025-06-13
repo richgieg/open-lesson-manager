@@ -2,7 +2,7 @@ import { Subject } from "@/types";
 
 type Props = {
   subject: Subject;
-  onDeleteLink: (pid: string) => Promise<void>;
+  onDeleteLink: (subjectPid: string) => Promise<void>;
 };
 
 export function DeleteLinkForm({ subject, onDeleteLink }: Props) {

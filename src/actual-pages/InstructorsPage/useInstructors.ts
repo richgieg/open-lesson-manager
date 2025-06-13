@@ -51,8 +51,8 @@ export function useInstructors() {
     setInstructors([...instructors, data]);
   };
 
-  const handleSave = async (pid: string, name: string) => {
-    const response = await fetch(`/api/instructors/${pid}`, {
+  const handleSave = async (instructorPid: string, name: string) => {
+    const response = await fetch(`/api/instructors/${instructorPid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -60,14 +60,16 @@ export function useInstructors() {
       body: JSON.stringify({ name }),
     });
     const data = await response.json();
-    setInstructors(instructors.map((i) => (i.pid === pid ? data : i)));
+    setInstructors(
+      instructors.map((i) => (i.pid === instructorPid ? data : i))
+    );
   };
 
-  const handleDelete = async (pid: string) => {
-    await fetch(`/api/instructors/${pid}`, {
+  const handleDelete = async (instructorPid: string) => {
+    await fetch(`/api/instructors/${instructorPid}`, {
       method: "DELETE",
     });
-    setInstructors(instructors.filter((i) => i.pid !== pid));
+    setInstructors(instructors.filter((i) => i.pid !== instructorPid));
   };
 
   return {

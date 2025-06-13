@@ -51,8 +51,8 @@ export function useSubjects() {
     setSubjects([...subjects, data]);
   };
 
-  const handleSave = async (pid: string, name: string) => {
-    const response = await fetch(`/api/subjects/${pid}`, {
+  const handleSave = async (subjectPid: string, name: string) => {
+    const response = await fetch(`/api/subjects/${subjectPid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -60,14 +60,14 @@ export function useSubjects() {
       body: JSON.stringify({ name }),
     });
     const data = await response.json();
-    setSubjects(subjects.map((i) => (i.pid === pid ? data : i)));
+    setSubjects(subjects.map((i) => (i.pid === subjectPid ? data : i)));
   };
 
-  const handleDelete = async (pid: string) => {
-    await fetch(`/api/subjects/${pid}`, {
+  const handleDelete = async (subjectPid: string) => {
+    await fetch(`/api/subjects/${subjectPid}`, {
       method: "DELETE",
     });
-    setSubjects(subjects.filter((i) => i.pid !== pid));
+    setSubjects(subjects.filter((i) => i.pid !== subjectPid));
   };
 
   return {

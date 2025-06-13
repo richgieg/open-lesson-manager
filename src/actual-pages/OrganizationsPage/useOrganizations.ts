@@ -36,8 +36,8 @@ export function useOrganizations() {
     setOrganizations([...organizations, data]);
   };
 
-  const handleSave = async (pid: string, name: string) => {
-    const response = await fetch(`/api/organizations/${pid}`, {
+  const handleSave = async (organizationPid: string, name: string) => {
+    const response = await fetch(`/api/organizations/${organizationPid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -45,14 +45,16 @@ export function useOrganizations() {
       body: JSON.stringify({ name }),
     });
     const data = await response.json();
-    setOrganizations(organizations.map((i) => (i.pid === pid ? data : i)));
+    setOrganizations(
+      organizations.map((i) => (i.pid === organizationPid ? data : i))
+    );
   };
 
-  const handleDelete = async (pid: string) => {
-    await fetch(`/api/organizations/${pid}`, {
+  const handleDelete = async (organizationPid: string) => {
+    await fetch(`/api/organizations/${organizationPid}`, {
       method: "DELETE",
     });
-    setOrganizations(organizations.filter((i) => i.pid !== pid));
+    setOrganizations(organizations.filter((i) => i.pid !== organizationPid));
   };
 
   return {
