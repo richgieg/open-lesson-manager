@@ -39,7 +39,7 @@ model Organization {
   instructors Instructor[]
 }
 
-model Subject {
+model Instructor {
   id             Int          @id @default(autoincrement())
   pid            String       @unique @default(uuid())
   name           String
@@ -47,7 +47,7 @@ model Subject {
   organizationId Int
 }
 
-model Instructor {
+model Subject {
   id             Int          @id @default(autoincrement())
   pid            String       @unique @default(uuid())
   name           String
