@@ -1,4 +1,5 @@
 import { Student } from "@/types";
+import Link from "next/link";
 import { useState, FormEvent } from "react";
 
 type Props = {
@@ -26,6 +27,11 @@ export function SaveDeleteForm({ student, onSave, onDelete }: Props) {
       <button type="button" onClick={handleDelete}>
         Delete
       </button>
+      {student.billingType === "self" && (
+        <Link href={`/students/${student.pid}/payment-method`}>
+          PaymentMethod
+        </Link>
+      )}
     </form>
   );
 }

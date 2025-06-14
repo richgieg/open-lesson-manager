@@ -1,0 +1,1 @@
+export { StudentPaymentMethodPage } from "./StudentPaymentMethodPage";
