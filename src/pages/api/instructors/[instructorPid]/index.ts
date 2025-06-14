@@ -1,5 +1,5 @@
 import { Instructor, Prisma } from "@/generated/prisma";
-import { makeApiHandler, prisma, sendError } from "@/lib";
+import { makeApiHandler, prisma, sendError, sendResponse } from "@/lib";
 import { NextApiResponse } from "next";
 
 export default makeApiHandler({
@@ -37,13 +37,13 @@ export default makeApiHandler({
     }
   },
 
-  DELETE: async (req, res: NextApiResponse<Instructor>) => {
+  DELETE: async (req, res: NextApiResponse<void>) => {
     const instructorPid = req.query.instructorPid as string;
     try {
-      const instructor = await prisma.instructor.delete({
+      await prisma.instructor.delete({
         where: { pid: instructorPid },
       });
-      return res.status(200).json(instructor);
+      return sendResponse(res, 204);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
