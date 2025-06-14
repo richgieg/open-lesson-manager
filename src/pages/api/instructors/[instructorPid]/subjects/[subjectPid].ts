@@ -3,7 +3,7 @@ import { Subject } from "@/generated/prisma";
 import { makeApiHandler, prisma, sendError } from "@/lib";
 
 export default makeApiHandler({
-  POST: async (req, res: NextApiResponse<Subject>) => {
+  PUT: async (req, res: NextApiResponse<Subject>) => {
     const instructorPid = req.query.instructorPid as string;
     const subjectPid = req.query.subjectPid as string;
     if (!subjectPid) {

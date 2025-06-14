@@ -39,7 +39,7 @@ export function useLinkedSubjects() {
     const response = await fetch(
       `/api/instructors/${instructorPid}/subjects/${subjectPid}`,
       {
-        method: "POST",
+        method: "PUT",
       }
     );
     const data = await response.json();
