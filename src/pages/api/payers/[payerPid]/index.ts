@@ -1,5 +1,5 @@
 import { Payer, Prisma } from "@/generated/prisma";
-import { makeApiHandler, prisma, sendError } from "@/lib";
+import { makeApiHandler, prisma, sendError, sendResponse } from "@/lib";
 import { NextApiResponse } from "next";
 
 export default makeApiHandler({
@@ -37,13 +37,13 @@ export default makeApiHandler({
     }
   },
 
-  DELETE: async (req, res: NextApiResponse<Payer>) => {
+  DELETE: async (req, res: NextApiResponse<void>) => {
     const payerPid = req.query.payerPid as string;
     try {
-      const payer = await prisma.payer.delete({
+      await prisma.payer.delete({
         where: { pid: payerPid },
       });
-      return res.status(200).json(payer);
+      return sendResponse(res, 204);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&

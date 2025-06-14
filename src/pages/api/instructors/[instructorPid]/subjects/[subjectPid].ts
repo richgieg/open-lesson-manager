@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { Subject } from "@/generated/prisma";
-import { makeApiHandler, prisma, sendError } from "@/lib";
+import { makeApiHandler, prisma, sendError, sendResponse } from "@/lib";
 
 export default makeApiHandler({
   PUT: async (req, res: NextApiResponse<Subject>) => {
@@ -34,7 +34,7 @@ export default makeApiHandler({
     return res.status(200).json(subject);
   },
 
-  DELETE: async (req, res: NextApiResponse<Subject>) => {
+  DELETE: async (req, res: NextApiResponse<void>) => {
     const instructorPid = req.query.instructorPid as string;
     const subjectPid = req.query.subjectPid as string;
     if (!subjectPid) {
@@ -54,6 +54,6 @@ export default makeApiHandler({
         subjects: { disconnect: { id: subject.id } },
       },
     });
-    return res.status(200).json(subject);
+    return sendResponse(res, 204);
   },
 });

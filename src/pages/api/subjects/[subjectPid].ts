@@ -1,5 +1,5 @@
 import { Subject, Prisma } from "@/generated/prisma";
-import { makeApiHandler, prisma, sendError } from "@/lib";
+import { makeApiHandler, prisma, sendError, sendResponse } from "@/lib";
 import { NextApiResponse } from "next";
 
 export default makeApiHandler({
@@ -37,13 +37,13 @@ export default makeApiHandler({
     }
   },
 
-  DELETE: async (req, res: NextApiResponse<Subject>) => {
+  DELETE: async (req, res: NextApiResponse<void>) => {
     const subjectPid = req.query.subjectPid as string;
     try {
-      const subject = await prisma.subject.delete({
+      await prisma.subject.delete({
         where: { pid: subjectPid },
       });
-      return res.status(200).json(subject);
+      return sendResponse(res, 204);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
