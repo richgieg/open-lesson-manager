@@ -30,7 +30,7 @@ model Instructor {
   pid            String       @unique @default(uuid())
   name           String
   organizationId Int
-  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   subjects       Subject[]
 }
 
@@ -39,7 +39,7 @@ model Subject {
   pid            String       @unique @default(uuid())
   name           String
   organizationId Int
-  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   instructors    Instructor[]
 }
 
@@ -59,7 +59,7 @@ model Student {
   payerId        Int?
   organization   Organization       @relation(fields: [organizationId], references: [id])
   payer          Payer?             @relation(fields: [payerId], references: [id])
-  PaymentMethod  PaymentMethod?
+  paymentMethod  PaymentMethod?
 }
 
 model Payer {
@@ -68,7 +68,7 @@ model Payer {
   name           String
   organizationId Int
   organization   Organization   @relation(fields: [organizationId], references: [id])
-  PaymentMethod  PaymentMethod?
+  paymentMethod  PaymentMethod?
   students       Student[]
 }
 

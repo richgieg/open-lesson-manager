@@ -12,14 +12,14 @@ export default makeApiHandler({
     const instructor = await prisma.instructor.findUnique({
       where: { pid: instructorPid },
       include: {
-        Organization: {
+        organization: {
           select: {
             subjects: true,
           },
         },
       },
     });
-    const subject = instructor?.Organization.subjects.find(
+    const subject = instructor?.organization.subjects.find(
       (s) => s.pid === subjectPid
     );
     if (!instructor || !subject) {

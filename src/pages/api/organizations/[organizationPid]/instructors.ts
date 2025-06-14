@@ -25,7 +25,7 @@ export default makeApiHandler({
       const instructor = await prisma.instructor.create({
         data: {
           name,
-          Organization: {
+          organization: {
             connect: { pid: organizationPid },
           },
         },

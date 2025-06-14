@@ -7,11 +7,11 @@ export default makeApiHandler({
     const instructorPid = req.query.instructorPid as string;
     const instructor = await prisma.instructor.findUnique({
       where: { pid: instructorPid },
-      include: { Organization: { include: { subjects: true } } },
+      include: { organization: { include: { subjects: true } } },
     });
     if (!instructor) {
       return sendError(res, 404);
     }
-    return res.status(200).json(instructor.Organization.subjects);
+    return res.status(200).json(instructor.organization.subjects);
   },
 });
