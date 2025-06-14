@@ -21,6 +21,7 @@
 - [Next.js](https://nextjs.org/)
 - TypeScript
 - PostgreSQL (via Prisma)
+- [Supabase](https://supabase.com/) (for authentication and database hosting)
 - Tailwind CSS
 - Vercel (for deployment)
 
