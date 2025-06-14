@@ -21,8 +21,8 @@ model Organization {
   name        String
   subjects    Subject[]
   instructors Instructor[]
-  Student     Student[]
-  Payer       Payer[]
+  students    Student[]
+  payers      Payer[]
 }
 
 model Instructor {
