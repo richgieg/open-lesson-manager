@@ -1,5 +1,5 @@
 import { PaymentMethod } from "@/generated/prisma";
-import { makeApiHandler, prisma, sendError } from "@/lib";
+import { makeApiHandler, prisma, sendError, sendResponse } from "@/lib";
 import { NextApiResponse } from "next";
 
 export default makeApiHandler({
@@ -28,5 +28,19 @@ export default makeApiHandler({
       },
     });
     return res.status(200).json(paymentMethod);
+  },
+
+  DELETE: async (req, res: NextApiResponse<void>) => {
+    const studentPid = req.query.studentPid as string;
+    const student = await prisma.student.findUnique({
+      where: { pid: studentPid },
+    });
+    if (!student) {
+      return sendError(res, 404);
+    }
+    await prisma.paymentMethod.deleteMany({
+      where: { studentId: student.id },
+    });
+    return sendResponse(res, 204);
   },
 });
