@@ -1,0 +1,1 @@
+export { PayersPage } from "./PayersPage";

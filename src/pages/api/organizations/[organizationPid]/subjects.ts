@@ -25,7 +25,7 @@ export default makeApiHandler({
       const subject = await prisma.subject.create({
         data: {
           name,
-          Organization: {
+          organization: {
             connect: { pid: organizationPid },
           },
         },

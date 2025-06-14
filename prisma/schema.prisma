@@ -21,6 +21,8 @@ model Organization {
   name        String
   subjects    Subject[]
   instructors Instructor[]
+  students    Student[]
+  payers      Payer[]
 }
 
 model Instructor {
@@ -28,7 +30,7 @@ model Instructor {
   pid            String       @unique @default(uuid())
   name           String
   organizationId Int
-  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   subjects       Subject[]
 }
 
@@ -37,6 +39,52 @@ model Subject {
   pid            String       @unique @default(uuid())
   name           String
   organizationId Int
-  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   instructors    Instructor[]
+}
+
+enum StudentBillingType {
+  self
+  payer
+}
+
+/// A student may either have a payer or their own payment method, but not both.
+/// This rule must be enforced in application logic.
+model Student {
+  id             Int                @id @default(autoincrement())
+  pid            String             @unique @default(uuid())
+  name           String
+  billingType    StudentBillingType
+  organizationId Int
+  payerId        Int?
+  organization   Organization       @relation(fields: [organizationId], references: [id])
+  payer          Payer?             @relation(fields: [payerId], references: [id])
+  paymentMethod  PaymentMethod?
+}
+
+model Payer {
+  id             Int            @id @default(autoincrement())
+  pid            String         @unique @default(uuid())
+  name           String
+  organizationId Int
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  paymentMethod  PaymentMethod?
+  students       Student[]
+}
+
+enum PaymentMethodOwnerType {
+  student
+  payer
+}
+
+/// A payment method must belong to either a payer or a student, but not both.
+/// This mutual exclusivity must be enforced in application logic.
+model PaymentMethod {
+  id        Int                    @id @default(autoincrement())
+  name      String
+  ownerType PaymentMethodOwnerType
+  payerId   Int?                   @unique
+  studentId Int?                   @unique
+  payer     Payer?                 @relation(fields: [payerId], references: [id])
+  student   Student?               @relation(fields: [studentId], references: [id])
 }

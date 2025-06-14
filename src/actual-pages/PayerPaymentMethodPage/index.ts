@@ -1,0 +1,1 @@
+export { PayerPaymentMethodPage } from "./PayerPaymentMethodPage";
