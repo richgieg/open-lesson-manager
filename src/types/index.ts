@@ -27,3 +27,10 @@ export type Student = {
   billingType: StudentBillingType;
   organizationId: number;
 };
+
+export type Payer = {
+  id: number;
+  pid: string;
+  name: string;
+  organizationId: number;
+};

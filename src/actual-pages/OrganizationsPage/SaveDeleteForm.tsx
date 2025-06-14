@@ -32,6 +32,7 @@ export function SaveDeleteForm({ organization, onSave, onDelete }: Props) {
         Instructors
       </Link>
       <Link href={`/organizations/${organization.pid}/students`}>Students</Link>
+      <Link href={`/organizations/${organization.pid}/payers`}>Payers</Link>
     </form>
   );
 }
