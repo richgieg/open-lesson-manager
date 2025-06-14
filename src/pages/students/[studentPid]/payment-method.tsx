@@ -1,1 +1,1 @@
-export { StudentPaymentMethodPage as default } from "@/actual-pages/StudentPaymentMethodPage";
+export { StudentPaymentMethodPage as default } from "@/actual-pages";
