@@ -1,0 +1,1 @@
+export { StudentPayerPage } from "./StudentPayerPage";

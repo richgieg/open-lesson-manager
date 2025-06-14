@@ -32,6 +32,9 @@ export function SaveDeleteForm({ student, onSave, onDelete }: Props) {
           PaymentMethod
         </Link>
       )}
+      {student.billingType === "payer" && (
+        <Link href={`/students/${student.pid}/payer`}>Payer</Link>
+      )}
     </form>
   );
 }
