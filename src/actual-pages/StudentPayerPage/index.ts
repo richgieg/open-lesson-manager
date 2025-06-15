@@ -1,1 +1,1 @@
-export { StudentPayerPage } from "./StudentPayerPage";
+export * from "./StudentPayerPage";

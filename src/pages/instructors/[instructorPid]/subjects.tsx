@@ -1,1 +1,1 @@
-export { InstructorSubjectsPage as default } from "@/actual-pages";
+export { InstructorSubjectsPage as default } from "@/actual-pages/InstructorSubjectsPage";

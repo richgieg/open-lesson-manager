@@ -1,1 +1,1 @@
-export { StudentPayerPage as default } from "@/actual-pages";
+export { StudentPayerPage as default } from "@/actual-pages/StudentPayerPage";
