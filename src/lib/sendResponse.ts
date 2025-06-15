@@ -8,10 +8,10 @@ export function sendResponse<T>(
   data: T
 ): void;
 
-export function sendResponse<T>(
-  res: NextApiResponse<T>,
+export function sendResponse(
+  res: NextApiResponse,
   status: number,
-  data?: T
+  data?: unknown
 ): void {
   if (data) {
     res.status(status).json(data);

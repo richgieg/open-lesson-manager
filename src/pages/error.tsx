@@ -1,3 +1,1 @@
-export default function ErrorPage() {
-  return <p>Sorry, something went wrong</p>;
-}
+export { ErrorPage as default } from "@/actual-pages/ErrorPage";

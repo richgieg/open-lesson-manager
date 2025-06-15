@@ -1,1 +1,1 @@
-export { PayerPaymentMethodPage } from "./PayerPaymentMethodPage";
+export * from "./PayerPaymentMethodPage";
